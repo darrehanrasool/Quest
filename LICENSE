@@ -1,14 +1,4 @@
-# Open Source License
-
-## Project Information
-**Project Name**: GATE Cutoff Analytica  
-**Main Developer**: Dar Rehan Rasool  
-**Location**: Srinagar, Jammu & Kashmir - 190015  
-**Email**: darrehanrasool@gmail.com  
-**GitHub**: [github.com/darrehanrasool](https://github.com/darrehanrasool)  
-**LinkedIn**: [linkedin.com/in/darrehanrasool](https://linkedin.com/in/darrehanrasool)  
-
-## MIT License
+MIT License
 
 Copyright (c) 2025 Dar Rehan Rasool
 
@@ -29,16 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-## Contribution Guidelines
-
-We welcome contributions from the open-source community! Please follow these guidelines:
-
-1. **Fork** the repository and create your branch from `main`
-2. **Test** your changes thoroughly
-3. **Submit** a pull request with a clear description of changes
-4. **Include** relevant documentation updates
-
-## Attribution
-
-If you use this project in your work, please consider giving credit:
