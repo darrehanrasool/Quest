@@ -11,650 +11,16 @@
         rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #0f172a;
-            --accent: #7c3aed;
-            --light: #f1f5f9;
-            --dark: #0f172a;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray: #64748b;
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: var(--light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles */
-        header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            border-bottom: 1px solid rgba(100, 116, 139, 0.3);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        .logo i {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .nav-links a:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover:after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, rgba(15, 23, 42, 0) 50%),
-                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.1) 0%, rgba(15, 23, 42, 0) 50%);
-            z-index: -1;
-        }
-
-        .hero-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            width: 100%;
-        }
-
-        .profile-card {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 20px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            max-width: 400px;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.3);
-        }
-
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 5px solid var(--accent);
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .profile-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .profile-info h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .profile-info h2 {
-            font-size: 1.2rem;
-            color: var(--accent);
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .profile-info p {
-            font-size: 1rem;
-            color: var(--gray);
-            margin-bottom: 15px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(100, 116, 139, 0.2);
-            color: white;
-            font-size: 1.2rem;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        .social-links a:hover {
-            background: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        .hero-text {
-            flex: 2;
-            max-width: 700px;
-        }
-
-        .hero-text h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            font-family: 'Roboto Slab', serif;
-        }
-
-        .hero-text h1 span {
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: #cbd5e1;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.6);
-        }
-
-        /* Section Styling */
-        section {
-            padding: 100px 0;
-            position: relative;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-family: 'Roboto Slab', serif;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-
-        .section-title p {
-            max-width: 700px;
-            margin: 0 auto;
-            color: #94a3b8;
-            font-size: 1.1rem;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tab-btn {
-            padding: 12px 30px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            color: white;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            font-size: 1rem;
-        }
-
-        .tab-btn.active,
-        .tab-btn:hover {
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            border-color: transparent;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Table Styling */
-        .table-container {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow-x: auto;
-        }
-
-        .table-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(100, 116, 139, 0.3);
-        }
-
-        .table-header h3 {
-            font-size: 1.5rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: rgba(37, 99, 235, 0.2);
-            text-align: left;
-            padding: 18px 20px;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-        }
-
-        td {
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(100, 116, 139, 0.2);
-            color: #e2e8f0;
-            font-weight: 400;
-        }
-
-        tr:hover td {
-            background: rgba(37, 99, 235, 0.1);
-        }
-
-        .branch-core {
-            color: var(--success);
-            font-weight: 500;
-        }
-
-        .branch-cse {
-            color: var(--warning);
-            font-weight: 500;
-        }
-
-        .branch-inter {
-            color: #60a5fa;
-            font-weight: 500;
-        }
-
-        .marks-high {
-            color: var(--danger);
-            font-weight: 600;
-        }
-
-        .marks-medium {
-            color: var(--warning);
-            font-weight: 600;
-        }
-
-        .marks-low {
-            color: var(--success);
-            font-weight: 600;
-        }
-
-        /* Visualization */
-        .visualization-section {
-            background: rgba(15, 23, 42, 0.8);
-            padding: 80px 0;
-            border-radius: 30px;
-            margin: 50px 0;
-        }
-
-        .chart-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .chart-card {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .chart-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chart-wrapper {
-            height: 300px;
-            position: relative;
-        }
-
-        /* Exam Cards */
-        .exam-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .exam-card {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
-        }
-
-        .exam-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.2);
-        }
-
-        .exam-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .exam-card p {
-            color: #94a3b8;
-            margin-bottom: 15px;
-        }
-
-        .exam-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(100, 116, 139, 0.3);
-            color: #cbd5e1;
-            font-size: 0.9rem;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(15, 23, 42, 0.9);
-            padding: 60px 0 30px;
-            border-top: 1px solid rgba(100, 116, 139, 0.3);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(100, 116, 139, 0.3);
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-card {
-                max-width: 100%;
-            }
-
-            .chart-container {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-text h1 {
-                font-size: 2.8rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background: rgba(15, 23, 42, 0.95);
-                flex-direction: column;
-                padding: 20px;
-                gap: 15px;
-                border-bottom: 1px solid rgba(100, 116, 139, 0.3);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .hero-text h1 {
-                font-size: 2.3rem;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .chart-container {
-                grid-template-columns: 1fr;
-            }
-
-            .exam-cards {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
-
-            .tab-btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <nav class="navbar">
                 <div class="logo">
                     <i class="fas fa-graduation-cap"></i>
-                    <span>GATE Analytica</span>
+                    <span>GATE Quest</span>
                 </div>
                 <div class="nav-links" id="navLinks">
                     <a href="#home">Home</a>
@@ -670,18 +36,17 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
                 <div class="profile-card">
                     <div class="profile-img">
-                        <img src="https://avatars.githubusercontent.com/u/12345678?v=4" alt="Dar Rehan Rasool">
+                        <img src="./public/./Header1.png" alt="Dar Rehan Rasool">
                     </div>
                     <div class="profile-info">
                         <h1>Dar Rehan Rasool</h1>
                         <h2>Computer Science Student</h2>
-                        <p>GATE Exam Specialist & Education Analyst</p>
+                        <p>hi buddy </p>
                     </div>
                     <div class="social-links">
                         <a href="mailto:darrehanrasool@gmail.com"><i class="fas fa-envelope"></i></a>
@@ -691,235 +56,104 @@
                     </div>
                 </div>
                 <div class="hero-text">
-                    <h1>Comprehensive <span>GATE Cutoff Analysis</span> for IITs & NITs</h1>
-                    <p>Explore detailed GATE cutoff marks across all IITs and NITs with branch-wise comparisons.
-                        Discover the qualifying marks for core, CSE, AI, DA, and interdisciplinary programs to make
-                        informed decisions about your M.Tech journey.</p>
+                    <h1>Complete <span>GATE Cutoff Analysis</span> for All IITs & NITs</h1>
+                    <p>Now with expanded coverage of all 23 IITs and top 10 NITs including core, emerging, and
+                        interdisciplinary branches with detailed marks-based cutoff information.</p>
                     <a href="#iits" class="cta-button">Explore Cutoffs <i class="fas fa-arrow-down"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- IITs Section -->
     <section id="iits">
         <div class="container">
             <div class="section-title">
-                <h2><i class="fas fa-chart-line"></i> IITs GATE Cutoff Analysis</h2>
-                <p>Detailed GATE qualifying and admission marks across top Indian Institutes of Technology</p>
+                <h2><i class="fas fa-chart-line"></i> Complete IITs GATE Cutoff Analysis</h2>
+                <p>Detailed branch-wise cutoff marks across all 23 Indian Institutes of Technology</p>
             </div>
 
             <div class="tabs">
-                <button class="tab-btn active" data-tab="top-iits">Top IITs</button>
-                <button class="tab-btn" data-tab="emerging">Emerging Branches</button>
-                <button class="tab-btn" data-tab="interdisciplinary">Interdisciplinary</button>
+                <button class="tab-btn active" data-tab="core-iits">Core Branches</button>
+                <button class="tab-btn" data-tab="emerging-iits">Emerging Branches</button>
+                <button class="tab-btn" data-tab="interdisciplinary-iits">Interdisciplinary</button>
             </div>
 
-            <div class="tab-content active" id="top-iits">
+            <div class="tab-content active" id="core-iits">
                 <div class="table-container">
                     <div class="table-header">
-                        <h3><i class="fas fa-trophy"></i> Top IITs Cutoff Marks (2025)</h3>
+                        <h3><i class="fas fa-cogs"></i> Core Engineering Branches Cutoff (2025)</h3>
+                        <div class="search-box">
+                            <input type="text" id="coreSearch" placeholder="Search IIT or branch...">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                    <table>
+                    <table id="coreTable">
                         <thead>
                             <tr>
-                                <th>Institute</th>
+                                <th>IIT</th>
                                 <th>Branch</th>
-                                <th>Category</th>
                                 <th>Qualifying Marks</th>
                                 <th>Admission Marks</th>
-                                <th>Branch Type</th>
+                                <th>Seats</th>
+                                <th>Demand</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>IIT Bombay</td>
-                                <td class="branch-cse">Computer Science</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">78.7</td>
-                                <td>CSE</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Delhi</td>
-                                <td class="branch-cse">Data Science & AI</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">76.5</td>
-                                <td>Emerging</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Madras</td>
-                                <td class="branch-core">Mechanical Engineering</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">35.8</td>
-                                <td class="marks-medium">65.2</td>
-                                <td>Core</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Kanpur</td>
-                                <td class="branch-inter">Biomedical Engineering</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">29.2</td>
-                                <td class="marks-medium">58.3</td>
-                                <td>Interdisciplinary</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Kharagpur</td>
-                                <td class="branch-core">Electrical Engineering</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">25.0</td>
-                                <td class="marks-medium">62.7</td>
-                                <td>Core</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Roorkee</td>
-                                <td class="branch-cse">Information Technology</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">74.8</td>
-                                <td>CSE</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Guwahati</td>
-                                <td class="branch-inter">Environmental Science</td>
-                                <td>GEN</td>
-                                <td class="marks-low">26.1</td>
-                                <td class="marks-medium">53.4</td>
-                                <td>Interdisciplinary</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Hyderabad</td>
-                                <td class="branch-cse">Artificial Intelligence</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">77.1</td>
-                                <td>Emerging</td>
-                            </tr>
+                            <!-- Core branch data will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="tab-content" id="emerging">
+            <div class="tab-content" id="emerging-iits">
                 <div class="table-container">
                     <div class="table-header">
                         <h3><i class="fas fa-microchip"></i> Emerging Branches Cutoff</h3>
+                        <div class="search-box">
+                            <input type="text" id="emergingSearch" placeholder="Search IIT or branch...">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                    <table>
+                    <table id="emergingTable">
                         <thead>
                             <tr>
-                                <th>Institute</th>
+                                <th>IIT</th>
                                 <th>Branch</th>
-                                <th>Category</th>
                                 <th>Qualifying Marks</th>
                                 <th>Admission Marks</th>
-                                <th>Demand Trend</th>
+                                <th>Seats</th>
+                                <th>Growth</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>IIT Bombay</td>
-                                <td class="branch-cse">Data Science</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">79.2</td>
-                                <td>High ↑</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Delhi</td>
-                                <td class="branch-cse">Machine Learning</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">78.5</td>
-                                <td>High ↑</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Madras</td>
-                                <td class="branch-cse">AI & Robotics</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">76.8</td>
-                                <td>High ↑</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Kanpur</td>
-                                <td class="branch-cse">Cyber Security</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">75.3</td>
-                                <td>Medium →</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Kharagpur</td>
-                                <td class="branch-inter">IoT Systems</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">27.7</td>
-                                <td class="marks-medium">68.4</td>
-                                <td>Growing ↗</td>
-                            </tr>
+                            <!-- Emerging branch data will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="tab-content" id="interdisciplinary">
+            <div class="tab-content" id="interdisciplinary-iits">
                 <div class="table-container">
                     <div class="table-header">
                         <h3><i class="fas fa-sitemap"></i> Interdisciplinary Branches Cutoff</h3>
+                        <div class="search-box">
+                            <input type="text" id="interSearch" placeholder="Search IIT or branch...">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                    <table>
+                    <table id="interTable">
                         <thead>
                             <tr>
-                                <th>Institute</th>
+                                <th>IIT</th>
                                 <th>Branch</th>
-                                <th>Category</th>
                                 <th>Qualifying Marks</th>
                                 <th>Admission Marks</th>
-                                <th>Vacancy Status</th>
+                                <th>Seats</th>
+                                <th>Field</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>IIT Bombay</td>
-                                <td class="branch-inter">Energy Systems</td>
-                                <td>GEN</td>
-                                <td class="marks-low">25.0</td>
-                                <td class="marks-low">42.8</td>
-                                <td>High</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Delhi</td>
-                                <td class="branch-inter">Material Science</td>
-                                <td>GEN</td>
-                                <td class="marks-low">25.0</td>
-                                <td class="marks-low">45.2</td>
-                                <td>High</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Madras</td>
-                                <td class="branch-inter">Industrial Design</td>
-                                <td>GEN</td>
-                                <td class="marks-low">26.6</td>
-                                <td class="marks-low">48.7</td>
-                                <td>Medium</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Kanpur</td>
-                                <td class="branch-inter">Agricultural Tech</td>
-                                <td>GEN</td>
-                                <td class="marks-low">25.0</td>
-                                <td class="marks-low">40.5</td>
-                                <td>High</td>
-                            </tr>
-                            <tr>
-                                <td>IIT Roorkee</td>
-                                <td class="branch-inter">Geo-informatics</td>
-                                <td>GEN</td>
-                                <td class="marks-low">25.7</td>
-                                <td class="marks-low">44.3</td>
-                                <td>High</td>
-                            </tr>
+                            <!-- Interdisciplinary branch data will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -927,210 +161,119 @@
         </div>
     </section>
 
-    <!-- Visualization Section -->
     <section class="visualization-section" id="visual">
         <div class="container">
             <div class="section-title">
                 <h2><i class="fas fa-chart-bar"></i> Cutoff Trends & Analysis</h2>
-                <p>Visual representation of GATE cutoff patterns across different institutes and branches</p>
+                <p>Visual comparison of GATE cutoff patterns across institutes and branch types</p>
             </div>
 
             <div class="chart-container">
                 <div class="chart-card">
-                    <h3><i class="fas fa-chart-line"></i> Branch-wise Cutoff Comparison</h3>
+                    <h3><i class="fas fa-university"></i> IIT Cutoff Comparison by Branch Type</h3>
                     <div class="chart-wrapper">
-                        <canvas id="branchChart"></canvas>
+                        <canvas id="iitComparisonChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3><i class="fas fa-university"></i> IIT vs NIT Cutoff Comparison</h3>
+                    <h3><i class="fas fa-chart-line"></i> Core vs Emerging vs Interdisciplinary</h3>
                     <div class="chart-wrapper">
-                        <canvas id="instituteChart"></canvas>
+                        <canvas id="branchComparisonChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- NITs Section -->
     <section id="nits">
         <div class="container">
             <div class="section-title">
                 <h2><i class="fas fa-chart-pie"></i> NITs GATE Cutoff Analysis</h2>
-                <p>Detailed GATE qualifying and admission marks across top National Institutes of Technology</p>
+                <p>Detailed branch-wise cutoff marks across top National Institutes of Technology</p>
             </div>
 
             <div class="tabs">
-                <button class="tab-btn active" data-tab="top-nits">Top NITs</button>
-                <button class="tab-btn" data-tab="nit-cse">CSE & IT</button>
-                <button class="tab-btn" data-tab="nit-core">Core Branches</button>
+                <button class="tab-btn active" data-tab="core-nits">Core Branches</button>
+                <button class="tab-btn" data-tab="cse-nits">CSE & IT</button>
+                <button class="tab-btn" data-tab="inter-nits">Interdisciplinary</button>
             </div>
 
-            <div class="tab-content active" id="top-nits">
+            <div class="tab-content active" id="core-nits">
                 <div class="table-container">
                     <div class="table-header">
-                        <h3><i class="fas fa-star"></i> Top NITs Cutoff Marks (2025)</h3>
+                        <h3><i class="fas fa-cogs"></i> Core Engineering Branches in NITs</h3>
+                        <div class="search-box">
+                            <input type="text" id="nitCoreSearch" placeholder="Search NIT or branch...">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                    <table>
+                    <table id="nitCoreTable">
                         <thead>
                             <tr>
-                                <th>Institute</th>
+                                <th>NIT</th>
                                 <th>Branch</th>
-                                <th>Category</th>
                                 <th>Qualifying Marks</th>
                                 <th>Admission Marks</th>
-                                <th>Branch Type</th>
+                                <th>Seats</th>
+                                <th>Demand</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>NIT Trichy</td>
-                                <td class="branch-cse">Computer Science</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">71.5</td>
-                                <td>CSE</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Warangal</td>
-                                <td class="branch-core">Electrical Engineering</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">25.0</td>
-                                <td class="marks-medium">63.2</td>
-                                <td>Core</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Surathkal</td>
-                                <td class="branch-cse">Information Technology</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">70.3</td>
-                                <td>CSE</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Rourkela</td>
-                                <td class="branch-core">Mechanical Engineering</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">35.8</td>
-                                <td class="marks-medium">60.8</td>
-                                <td>Core</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Calicut</td>
-                                <td class="branch-inter">Industrial Engineering</td>
-                                <td>GEN</td>
-                                <td class="marks-low">35.6</td>
-                                <td class="marks-low">52.4</td>
-                                <td>Interdisciplinary</td>
-                            </tr>
+                            <!-- NIT core branch data will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="tab-content" id="nit-cse">
+            <div class="tab-content" id="cse-nits">
                 <div class="table-container">
                     <div class="table-header">
-                        <h3><i class="fas fa-laptop-code"></i> NITs CSE & IT Cutoff</h3>
+                        <h3><i class="fas fa-laptop-code"></i> CSE & IT Branches in NITs</h3>
+                        <div class="search-box">
+                            <input type="text" id="nitCseSearch" placeholder="Search NIT or branch...">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                    <table>
+                    <table id="nitCseTable">
                         <thead>
                             <tr>
-                                <th>Institute</th>
+                                <th>NIT</th>
                                 <th>Branch</th>
-                                <th>Category</th>
                                 <th>Qualifying Marks</th>
                                 <th>Admission Marks</th>
-                                <th>Rank Range</th>
+                                <th>Seats</th>
+                                <th>Placement</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>NIT Trichy</td>
-                                <td class="branch-cse">Computer Science</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">71.5</td>
-                                <td>1-300</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Warangal</td>
-                                <td class="branch-cse">Data Science</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">69.8</td>
-                                <td>1-400</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Surathkal</td>
-                                <td class="branch-cse">Information Security</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.2</td>
-                                <td class="marks-high">70.3</td>
-                                <td>1-350</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Calicut</td>
-                                <td class="branch-cse">AI & ML</td>
-                                <td>GEN</td>
-                                <td class="marks-high">29.0</td>
-                                <td class="marks-high">68.7</td>
-                                <td>1-450</td>
-                            </tr>
+                            <!-- NIT CSE branch data will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="tab-content" id="nit-core">
+            <div class="tab-content" id="inter-nits">
                 <div class="table-container">
                     <div class="table-header">
-                        <h3><i class="fas fa-cogs"></i> NITs Core Engineering Cutoff</h3>
+                        <h3><i class="fas fa-lightbulb"></i> Interdisciplinary Branches in NITs</h3>
+                        <div class="search-box">
+                            <input type="text" id="nitInterSearch" placeholder="Search NIT or branch...">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                    <table>
+                    <table id="nitInterTable">
                         <thead>
                             <tr>
-                                <th>Institute</th>
+                                <th>NIT</th>
                                 <th>Branch</th>
-                                <th>Category</th>
                                 <th>Qualifying Marks</th>
                                 <th>Admission Marks</th>
-                                <th>Vacancy Status</th>
+                                <th>Seats</th>
+                                <th>Field</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>NIT Rourkela</td>
-                                <td class="branch-core">Mechanical</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">35.8</td>
-                                <td class="marks-medium">60.8</td>
-                                <td>Medium</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Trichy</td>
-                                <td class="branch-core">Civil</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">29.2</td>
-                                <td class="marks-medium">58.2</td>
-                                <td>Medium</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Warangal</td>
-                                <td class="branch-core">Electrical</td>
-                                <td>GEN</td>
-                                <td class="marks-medium">25.0</td>
-                                <td class="marks-medium">63.2</td>
-                                <td>Low</td>
-                            </tr>
-                            <tr>
-                                <td>NIT Durgapur</td>
-                                <td class="branch-core">Chemical</td>
-                                <td>GEN</td>
-                                <td class="marks-low">27.7</td>
-                                <td class="marks-low">51.3</td>
-                                <td>High</td>
-                            </tr>
+                            <!-- NIT interdisciplinary branch data will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -1298,158 +441,8 @@
         </div>
     </footer>
 
-    <script>
-        // Mobile Toggle
-        document.getElementById('mobileToggle').addEventListener('click', function () {
-            document.getElementById('navLinks').classList.toggle('active');
-        });
-
-        // Tab Functionality
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons and content
-                tabBtns.forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-
-                // Add active class to clicked button
-                btn.classList.add('active');
-
-                // Show corresponding content
-                const tabId = btn.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-
-                // Close mobile menu if open
-                if (document.getElementById('navLinks').classList.contains('active')) {
-                    document.getElementById('navLinks').classList.remove('active');
-                }
-            });
-        });
-
-        // Charts
-        document.addEventListener('DOMContentLoaded', function () {
-            // Branch Cutoff Comparison Chart
-            const branchCtx = document.getElementById('branchChart').getContext('2d');
-            const branchChart = new Chart(branchCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['CSE', 'AI/ML', 'Data Science', 'ECE', 'Mechanical', 'Civil', 'Interdisciplinary'],
-                    datasets: [{
-                        label: 'Qualifying Marks',
-                        data: [29.2, 29.0, 29.0, 25.0, 35.8, 29.2, 26.1],
-                        backgroundColor: 'rgba(124, 58, 237, 0.7)',
-                        borderColor: 'rgba(124, 58, 237, 1)',
-                        borderWidth: 1
-                    }, {
-                        label: 'Admission Marks',
-                        data: [78.7, 77.1, 76.5, 62.7, 65.2, 58.2, 48.7],
-                        backgroundColor: 'rgba(37, 99, 235, 0.7)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Marks (out of 100)'
-                            },
-                            grid: {
-                                color: 'rgba(100, 116, 139, 0.1)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#e2e8f0'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Institute Comparison Chart
-            const instituteCtx = document.getElementById('instituteChart').getContext('2d');
-            const instituteChart = new Chart(instituteCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['CSE', 'AI/ML', 'ECE', 'Mechanical', 'Civil', 'Interdisciplinary'],
-                    datasets: [{
-                        label: 'IITs',
-                        data: [78.7, 77.1, 62.7, 65.2, 58.2, 48.7],
-                        backgroundColor: 'rgba(124, 58, 237, 0.2)',
-                        borderColor: 'rgba(124, 58, 237, 1)',
-                        pointBackgroundColor: 'rgba(124, 58, 237, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(124, 58, 237, 1)',
-                        borderWidth: 2
-                    }, {
-                        label: 'NITs',
-                        data: [71.5, 69.8, 63.2, 60.8, 58.2, 52.4],
-                        backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
-                        pointBackgroundColor: 'rgba(37, 99, 235, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(37, 99, 235, 1)',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(100, 116, 139, 0.1)'
-                            },
-                            grid: {
-                                color: 'rgba(100, 116, 139, 0.1)'
-                            },
-                            pointLabels: {
-                                color: '#e2e8f0'
-                            },
-                            ticks: {
-                                backdropColor: 'transparent',
-                                color: '#94a3b8'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#e2e8f0'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
